@@ -9,10 +9,10 @@ import { Logo } from "@/components/ui/logo";
  */
 export default function AppLayout({ children }: LayoutProps<"/">) {
   return (
-    <div className="flex h-dvh flex-col">
-      <header className="flex items-center justify-between gap-3 border-b border-chalk/10 bg-pitch-950/60 px-4 py-3">
+    <div className="stadium-bg flex h-dvh flex-col overflow-clip">
+      <header className="relative z-10 flex items-center justify-between gap-3 border-b border-chalk/10 bg-pitch-950/50 px-4 py-2.5 backdrop-blur-xl">
         <Logo href="/chat" />
-        <Suspense fallback={<div className="h-8 w-32 animate-pulse rounded-lg bg-pitch-700" />}>
+        <Suspense fallback={<div className="skeleton h-8 w-40 rounded-lg" />}>
           <UserNav />
         </Suspense>
       </header>

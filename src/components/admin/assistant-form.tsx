@@ -84,7 +84,7 @@ export function AssistantForm({
         <p className="text-right text-xs text-chalk-muted">{form.systemPrompt.length} / 8000 caracteres</p>
       </div>
 
-      <aside className="space-y-5 rounded-xl border border-chalk/10 bg-pitch-800 p-5 lg:self-start">
+      <aside className="space-y-5 glass animate-fade-up rounded-2xl p-5 lg:self-start">
         <div className="rounded-lg bg-pitch-950/60 px-3 py-2 text-xs text-chalk-muted">
           Proveedor activo: <span className="font-semibold text-chalk">{provider}</span>
           {provider === "mock" && <p className="mt-1">Respuestas simuladas: el modelo y los parámetros se usarán con Groq.</p>}

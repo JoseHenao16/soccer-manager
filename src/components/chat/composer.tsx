@@ -45,7 +45,7 @@ export function Composer({
       }}
       className="mx-auto w-full max-w-3xl px-4 pb-4"
     >
-      <div className="flex items-end gap-2 rounded-2xl border border-chalk/15 bg-pitch-800 p-2 focus-within:border-accent/60">
+      <div className="glass glow-border flex items-end gap-2 rounded-2xl p-2 shadow-xl shadow-black/30 transition focus-within:shadow-[0_10px_40px_-15px_#a3e635]">
         <textarea
           ref={ref}
           value={value}
@@ -65,9 +65,9 @@ export function Composer({
           type="submit"
           disabled={disabled || !value.trim() || tooLong}
           aria-label="Enviar"
-          className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-pitch-950 transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-40"
+          className="group grid size-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-accent to-turf text-pitch-950 shadow-[0_6px_20px_-8px_#a3e635] transition hover:scale-105 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40 disabled:shadow-none disabled:hover:scale-100"
         >
-          <svg viewBox="0 0 24 24" className="size-5" fill="none" stroke="currentColor" strokeWidth="2.2">
+          <svg viewBox="0 0 24 24" className="size-5 transition group-enabled:group-hover:-rotate-45" fill="none" stroke="currentColor" strokeWidth="2.2">
             <path d="M5 12h14M13 6l6 6-6 6" />
           </svg>
         </button>

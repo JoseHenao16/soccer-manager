@@ -1,12 +1,21 @@
+import { TacticalBoard } from "@/components/landing/tactical-board";
 import { Logo } from "@/components/ui/logo";
 
 export default function AuthLayout({ children }: LayoutProps<"/">) {
   return (
-    <main className="pitch-lines flex min-h-screen flex-col items-center justify-center px-4 py-10">
-      <div className="mb-8">
+    <main className="stadium-bg flex min-h-screen flex-col items-center justify-center overflow-clip px-4 py-10">
+      {/* Pizarra animada de fondo, muy tenue */}
+      <div className="pointer-events-none absolute inset-0 -z-10 grid place-items-center opacity-[0.12]" aria-hidden>
+        <TacticalBoard className="w-[140vmax] max-w-none rotate-[-8deg]" />
+      </div>
+      <div className="mb-8 animate-fade-up">
         <Logo />
       </div>
-      <div className="w-full max-w-sm rounded-2xl border border-chalk/10 bg-pitch-800/80 p-6 shadow-2xl backdrop-blur sm:p-8">
+      <div
+        className="glass glow-border w-full max-w-sm animate-pop-in rounded-2xl p-6 shadow-2xl shadow-black/50 sm:p-8"
+        data-active="true"
+        style={{ animationDelay: "80ms" }}
+      >
         {children}
       </div>
     </main>

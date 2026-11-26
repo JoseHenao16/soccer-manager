@@ -10,16 +10,17 @@ import { useState } from "react";
 export function ActivityChart({ data }: { data: { day: string; count: number }[] }) {
   const [hover, setHover] = useState<number | null>(null);
   const max = Math.max(1, ...data.map((d) => d.count));
-  const niceMax = max <= 5 ? 5 : Math.ceil(max / 5) * 5;
+  // Tope "redondo" y par, para que la marca intermedia (niceMax / 2) sea entera.
+  const niceMax = max <= 4 ? 4 : max <= 10 ? 10 : Math.ceil(max / 10) * 10;
   const total = data.reduce((s, d) => s + d.count, 0);
 
   const fmt = (iso: string, opts: Intl.DateTimeFormatOptions) =>
     new Date(`${iso}T12:00:00Z`).toLocaleDateString("es-CO", { timeZone: "UTC", ...opts });
 
   return (
-    <figure className="rounded-xl border border-chalk/10 bg-pitch-800 p-5">
+    <figure className="glass animate-fade-up rounded-2xl p-5 [animation-delay:200ms]">
       <figcaption className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
-        <span className="font-semibold">Preguntas por día</span>
+        <span className="font-display text-xl font-bold uppercase tracking-wide">Preguntas por día</span>
         <span className="text-xs text-chalk-muted">
           Últimos {data.length} días · {total} en total
         </span>
@@ -54,10 +55,12 @@ export function ActivityChart({ data }: { data: { day: string; count: number }[]
                   onMouseLeave={() => setHover(null)}
                 >
                   <div
-                    className="w-full rounded-t-[4px] transition-colors"
+                    className="w-full origin-bottom animate-grow-y rounded-t-[4px] transition-[background-color,box-shadow]"
                     style={{
                       height: d.count ? `${Math.max(pct, 2)}%` : "2px",
                       background: d.count ? (hover === i ? "#a3e635" : "#65a30d") : "rgb(238 243 238 / 0.12)",
+                      boxShadow: hover === i && d.count ? "0 0 16px -2px #a3e635" : undefined,
+                      animationDelay: `${200 + i * 40}ms`,
                     }}
                   />
                   {hover === i && (

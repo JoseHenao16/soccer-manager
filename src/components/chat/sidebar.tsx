@@ -29,9 +29,9 @@ export function Sidebar({
       <div className="p-3">
         <button
           onClick={onNew}
-          className="flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-pitch-950 transition hover:bg-accent-strong"
+          className="btn-shine group flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent to-turf px-4 py-2.5 text-sm font-semibold text-pitch-950 shadow-[0_8px_24px_-12px_#a3e635] transition hover:brightness-110 active:scale-[0.98]"
         >
-          <span className="text-lg leading-none">+</span> Nueva conversación
+          <span className="text-lg leading-none transition duration-300 group-hover:rotate-90">+</span> Nueva conversación
         </button>
       </div>
 
@@ -41,7 +41,7 @@ export function Sidebar({
         {state === "loading" && (
           <ul className="space-y-2 px-1" aria-label="Cargando historial">
             {[0, 1, 2, 3].map((i) => (
-              <li key={i} className="h-12 animate-pulse rounded-lg bg-pitch-700/50" />
+              <li key={i} className="skeleton h-12 rounded-lg" />
             ))}
           </ul>
         )}
@@ -61,9 +61,10 @@ export function Sidebar({
 
         {state === "ready" && (
           <ul className="space-y-1">
-            {conversations.map((c) => (
+            {conversations.map((c, i) => (
               <ConversationItem
                 key={c.id}
+                index={i}
                 conversation={c}
                 active={c.id === activeId}
                 onSelect={() => onSelect(c.id)}
@@ -79,12 +80,14 @@ export function Sidebar({
 }
 
 function ConversationItem({
+  index,
   conversation,
   active,
   onSelect,
   onRename,
   onDelete,
 }: {
+  index: number;
   conversation: ConversationDTO;
   active: boolean;
   onSelect: () => void;
@@ -162,12 +165,19 @@ function ConversationItem({
 
   return (
     <li
-      className={`group flex items-center gap-1 rounded-lg transition ${
-        active ? "bg-pitch-700" : "hover:bg-pitch-700/50"
+      style={{ animationDelay: `${Math.min(index, 12) * 35}ms` }}
+      className={`group relative flex animate-slide-in items-center gap-1 rounded-lg transition ${
+        active ? "bg-accent/10" : "hover:bg-pitch-700/50"
       } ${mode === "busy" ? "pointer-events-none opacity-50" : ""}`}
     >
+      <span
+        aria-hidden
+        className={`absolute inset-y-2 left-0 w-[3px] rounded-full bg-accent transition-all duration-300 ${
+          active ? "opacity-100 shadow-[0_0_8px_#a3e635]" : "scale-y-0 opacity-0"
+        }`}
+      />
       <button onClick={onSelect} className="min-w-0 flex-1 px-3 py-2 text-left" aria-current={active ? "page" : undefined}>
-        <p className="truncate text-sm">{conversation.title}</p>
+        <p className={`truncate text-sm ${active ? "font-medium text-chalk" : ""}`}>{conversation.title}</p>
         <p className="text-[11px] text-chalk-muted/70">
           {info.icon} {info.label} · {formatDate(conversation.updatedAt)}
         </p>

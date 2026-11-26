@@ -55,7 +55,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
       />
 
       {error && (
-        <p role="alert" className="rounded-lg border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
+        <p role="alert" className="animate-pop-in rounded-lg border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">
           {error}
         </p>
       )}
@@ -63,8 +63,9 @@ export function AuthForm({ mode }: { mode: Mode }) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full rounded-lg bg-accent px-4 py-2.5 font-semibold text-pitch-950 transition hover:bg-accent-strong disabled:cursor-not-allowed disabled:opacity-60"
+        className="btn-shine flex w-full items-center justify-center gap-2 rounded-xl bg-accent px-4 py-3 font-semibold text-pitch-950 shadow-[0_10px_30px_-12px_#a3e635] transition hover:bg-accent-strong active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
       >
+        {loading && <span className="size-4 animate-spin rounded-full border-2 border-pitch-950/30 border-t-pitch-950" aria-hidden />}
         {loading ? "Un momento…" : isRegister ? "Crear cuenta" : "Entrar"}
       </button>
 
@@ -86,7 +87,7 @@ function Field(props: React.InputHTMLAttributes<HTMLInputElement> & { label: str
       <input
         {...input}
         required
-        className="w-full rounded-lg border border-chalk/15 bg-pitch-950/60 px-3 py-2.5 text-chalk outline-none placeholder:text-chalk-muted/50 focus:border-accent focus:ring-2 focus:ring-accent/30"
+        className="w-full rounded-xl border border-chalk/15 bg-pitch-950/60 px-3.5 py-2.5 text-chalk outline-none transition placeholder:text-chalk-muted/50 hover:border-chalk/30 focus:border-accent focus:bg-pitch-950 focus:ring-4 focus:ring-accent/15"
       />
     </label>
   );

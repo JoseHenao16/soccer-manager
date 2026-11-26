@@ -64,9 +64,9 @@ export function UsersTable({ users: initial, currentUserId }: { users: UserRow[]
         </p>
       )}
 
-      <div className="overflow-x-auto rounded-xl border border-chalk/10">
+      <div className="glass animate-fade-up overflow-x-auto rounded-2xl">
         <table className="w-full min-w-[560px] text-left text-sm">
-          <thead className="bg-pitch-800 text-xs uppercase tracking-wider text-chalk-muted">
+          <thead className="bg-pitch-950/40 text-xs uppercase tracking-wider text-chalk-muted">
             <tr>
               <th className="px-4 py-3 font-medium">Usuario</th>
               <th className="px-4 py-3 font-medium">Registro</th>
@@ -77,7 +77,7 @@ export function UsersTable({ users: initial, currentUserId }: { users: UserRow[]
             {filtered.map((u) => {
               const isMe = u.id === currentUserId;
               return (
-                <tr key={u.id} className="border-t border-chalk/10">
+                <tr key={u.id} className="border-t border-chalk/10 transition hover:bg-accent/5">
                   <td className="px-4 py-3">
                     <p className="font-medium">
                       {u.name ?? "Sin nombre"} {isMe && <span className="text-xs text-chalk-muted">(tú)</span>}
