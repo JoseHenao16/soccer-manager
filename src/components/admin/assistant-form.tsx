@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { api, ApiError } from "@/lib/api-client";
+import { PROMPT_MAX } from "@/lib/validation/admin";
 
 interface Config {
   systemPrompt: string;
@@ -81,7 +82,7 @@ export function AssistantForm({
           rows={24}
           className="w-full rounded-xl border border-chalk/15 bg-pitch-950/60 p-4 font-mono text-xs leading-relaxed outline-none focus:border-accent"
         />
-        <p className="text-right text-xs text-chalk-muted">{form.systemPrompt.length} / 8000 caracteres</p>
+        <p className="text-right text-xs text-chalk-muted">{form.systemPrompt.length} / {PROMPT_MAX} caracteres</p>
       </div>
 
       <aside className="space-y-5 glass animate-fade-up rounded-2xl p-5 lg:self-start">
