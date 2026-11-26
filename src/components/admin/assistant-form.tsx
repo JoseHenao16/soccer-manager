@@ -155,7 +155,8 @@ export function AssistantForm({
           {saving ? "Guardando…" : dirty ? "Guardar cambios" : "Sin cambios"}
         </button>
         <p className="text-center text-[11px] text-chalk-muted">
-          Última actualización: {new Date(baseline.updatedAt).toLocaleString("es-CO")}
+          Última actualización: {/* Zona fija: el servidor (UTC) y el navegador deben producir el mismo texto al hidratar */}
+          {new Date(baseline.updatedAt).toLocaleString("es-CO", { timeZone: "America/Bogota" })}
         </p>
       </aside>
     </form>

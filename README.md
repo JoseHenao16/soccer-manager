@@ -3,12 +3,23 @@
 Asistente conversacional de IA **experto en fútbol**: táctica, diseño de entrenamientos y Reglas de Juego de la IFAB.
 Proyecto integrador **AI Expert Chat**, Ingeniería Web (docente Juan Pablo Arango), 2026.
 
-- **Demo en vivo:** _(pendiente: URL de Vercel)_
+- **Demo en vivo:** https://soccer-manager-futnorte.vercel.app
 - **Repositorio:** https://github.com/JoseHenao16/soccer-manager
 
 | Integrante | Rol |
 |---|---|
 | José Henao | Desarrollo completo (proyecto individual) |
+
+### Cuentas de prueba
+
+Para probar la demo sin registrarse (también puedes crear tu propia cuenta en **Registrarse**, que entra con rol USER):
+
+| Rol | Correo | Contraseña | Qué puede hacer |
+|---|---|---|---|
+| **ADMIN** | `admin.demo@futnorte.com` | `AdminDemo2026*` | Chat + panel de administración (estadísticas, usuarios y configuración del asistente) |
+| **USER** | `usuario.demo@futnorte.com` | `UsuarioDemo2026*` | Chat e historial propio; el panel de admin le está bloqueado (redirección en la página y 403 en la API) |
+
+> Son cuentas exclusivas de demostración, distintas del administrador real del proyecto. Se pide no cambiar los roles de otros usuarios ni dejar el System Prompt modificado; el botón **Restaurar el prompt por defecto** (y luego **Guardar**) lo recupera.
 
 ---
 

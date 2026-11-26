@@ -85,7 +85,7 @@ export function UsersTable({ users: initial, currentUserId }: { users: UserRow[]
                     <p className="text-xs text-chalk-muted">{u.email}</p>
                   </td>
                   <td className="px-4 py-3 text-chalk-muted">
-                    {new Date(u.createdAt).toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric" })}
+                    {new Date(u.createdAt).toLocaleDateString("es-CO", { day: "numeric", month: "short", year: "numeric", timeZone: "America/Bogota" })}
                   </td>
                   <td className="px-4 py-3">
                     <select
