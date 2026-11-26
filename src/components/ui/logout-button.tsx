@@ -1,17 +1,19 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export function LogoutButton() {
-  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function logout() {
+    if (loading) return;
     setLoading(true);
-    await fetch("/api/auth/logout", { method: "POST" }).catch(() => null);
-    router.replace("/login");
-    router.refresh();
+    // Aunque la petición falle, se navega igual: el servidor borra las cookies de sesión
+    // y el proxy decide a dónde ir con lo que quede.
+    await fetch("/api/auth/logout", { method: "POST", cache: "no-store" }).catch(() => null);
+    // Recarga completa (no router.replace): descarta la caché del router de Next y el estado
+    // en memoria del usuario anterior (conversaciones, panel de admin…).
+    window.location.replace(new URL("/login", window.location.origin).toString());
   }
 
   return (

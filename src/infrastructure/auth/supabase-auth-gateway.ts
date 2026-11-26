@@ -1,5 +1,6 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { cookies } from "next/headers";
 import { DomainError, UnauthorizedError, ValidationError } from "@/core/domain/errors";
 import type { AuthGateway, AuthIdentity } from "@/core/domain/ports/auth-gateway";
 
@@ -48,7 +49,17 @@ export class SupabaseAuthGateway implements AuthGateway {
   }
 
   async signOut() {
-    await this.supabase.auth.signOut();
+    // scope "local": cierra solo la sesión de este navegador. Con "global" (el valor por
+    // defecto) salir en un dispositivo cerraba la cuenta en todos, y las cuentas demo se comparten.
+    const { error } = await this.supabase.auth.signOut({ scope: "local" });
+    if (error) console.warn("[SupabaseAuthGateway] signOut:", error.message);
+
+    // Pase lo que pase con Supabase (token vencido, error de red…), se borran las cookies de
+    // sesión: si quedaran, el proxy seguiría viendo al usuario como autenticado.
+    const store = await cookies();
+    for (const { name } of store.getAll()) {
+      if (name.startsWith("sb-")) store.delete(name);
+    }
   }
 
   async current(): Promise<AuthIdentity | null> {
