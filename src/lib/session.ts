@@ -1,5 +1,6 @@
 import "server-only";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { cache } from "react";
 import {
   assertAdmin,
@@ -11,6 +12,9 @@ import { makeAuthGateway, repositories } from "./container";
 
 /** Usuario de la sesión actual (memoizado por request). */
 export const getSessionUser = cache(async (): Promise<User | null> => {
+  // Marca explícitamente la lectura como dinámica (request-time) antes de que las
+  // librerías de auth/DB usen Date.now(); requerido con cacheComponents.
+  await connection();
   return getCurrentUser({ auth: await makeAuthGateway(), users: repositories.users });
 });
 

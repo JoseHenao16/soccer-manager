@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_rethrow } from "next/navigation";
 import { NextResponse } from "next/server";
 import type { z } from "zod";
 import { DomainError, ValidationError } from "@/core/domain/errors";
@@ -19,6 +20,8 @@ export function json<T>(data: T, status = 200) {
 
 /** Convierte cualquier error en una respuesta JSON consistente: { error: { code, message } }. */
 export function handleApiError(error: unknown) {
+  // Deja pasar los errores internos de Next (prerender dinámico, redirect, notFound).
+  unstable_rethrow(error);
   if (error instanceof DomainError) {
     return json(
       {
