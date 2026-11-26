@@ -130,7 +130,7 @@ Borrado en cascada: eliminar una conversación elimina sus mensajes. Esquema en 
 
 ### Evaluación
 
-13 preguntas de prueba con el resultado esperado frente al obtenido, en [`docs/PRUEBAS-IA.md`](docs/PRUEBAS-IA.md). Las preguntas cubren:
+Se evaluó con 13 preguntas de prueba, comparando el resultado esperado con el obtenido. Las preguntas cubren:
 - fútbol en los 4 modos;
 - preguntas fuera de dominio;
 - salud y apuestas;
@@ -187,9 +187,3 @@ En Supabase, desactiva **Authentication → Sign In / Providers → Email → Co
 3. Pulsa **Deploy**. Las migraciones se aplican desde local con `npm run db:deploy`; la base de datos es la misma.
 
 Las funciones se ejecutan en `pdx1` (Oregón), junto a la base de datos de Supabase en `us-west-2` (ver [`vercel.json`](vercel.json)).
-
-## Documentación del proceso
-
-- [`docs/CONTEXTO.md`](docs/CONTEXTO.md): enunciado resumido, alcance del dominio y decisiones de arquitectura.
-- [`docs/FASES.md`](docs/FASES.md): fases del proyecto y bitácora de avances y problemas resueltos.
-- [`docs/PRUEBAS-IA.md`](docs/PRUEBAS-IA.md): evaluación del asistente.
