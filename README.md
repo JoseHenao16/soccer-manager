@@ -4,6 +4,7 @@ Asistente conversacional de IA **experto en fútbol**: táctica, diseño de entr
 Proyecto integrador **AI Expert Chat**, Ingeniería Web (docente Juan Pablo Arango), 2026.
 
 - **Demo en vivo:** https://soccer-manager-futnorte.vercel.app
+- **Video de demostración:** https://youtu.be/vhA7-3WB8G4 (recorrido completo: autenticación, chat, historial, límites del asistente y panel de administración)
 - **Repositorio:** https://github.com/JoseHenao16/soccer-manager
 
 | Integrante | Rol |
