@@ -5,6 +5,7 @@ import { createSupabaseServerClient } from "@/infrastructure/auth/supabase-serve
 import { PrismaAssistantConfigRepository } from "@/infrastructure/db/repositories/prisma-assistant-config-repository";
 import { PrismaConversationRepository } from "@/infrastructure/db/repositories/prisma-conversation-repository";
 import { PrismaMessageRepository } from "@/infrastructure/db/repositories/prisma-message-repository";
+import { PrismaStatsRepository } from "@/infrastructure/db/repositories/prisma-stats-repository";
 import { PrismaUserRepository } from "@/infrastructure/db/repositories/prisma-user-repository";
 
 /**
@@ -16,6 +17,7 @@ export const repositories = {
   conversations: new PrismaConversationRepository(),
   messages: new PrismaMessageRepository(),
   config: new PrismaAssistantConfigRepository(),
+  stats: new PrismaStatsRepository(),
 };
 
 let aiProvider: ReturnType<typeof createAIProvider> | undefined;
