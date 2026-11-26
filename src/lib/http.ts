@@ -11,6 +11,9 @@ const STATUS: Record<string, number> = {
   VALIDATION: 400,
   RATE_LIMIT: 429,
   AI_PROVIDER: 502,
+  AI_RATE_LIMIT: 429,
+  AI_TIMEOUT: 504,
+  AI_CONFIG: 500,
   AUTH: 400,
 };
 

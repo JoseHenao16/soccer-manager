@@ -3,12 +3,12 @@
 import { useParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { AssistantMode } from "@/core/domain/entities";
-import { api, ApiError } from "@/lib/api-client";
+import { api, ApiError, postStream } from "@/lib/api-client";
 import { Composer } from "./composer";
 import { EmptyState } from "./empty-state";
 import { MessageList } from "./message-list";
 import { Sidebar } from "./sidebar";
-import { MODES, type ConversationDTO, type MessageDTO, type SendMessageResponse } from "./types";
+import { MODES, type ConversationDTO, type MessageDTO, type StreamEvent } from "./types";
 
 type ListState = "loading" | "ready" | "error";
 type MessagesState = "idle" | "loading" | "error" | "not-found";
@@ -30,6 +30,8 @@ export function ChatApp() {
   const [messages, setMessages] = useState<MessageDTO[]>([]);
   const [messagesState, setMessagesState] = useState<MessagesState>(initialId ? "loading" : "idle");
   const [sending, setSending] = useState(false);
+  /** Texto de la respuesta mientras llega por streaming (null = aún no empieza). */
+  const [streamingText, setStreamingText] = useState<string | null>(null);
   const [error, setError] = useState<{ message: string; retry?: () => void } | null>(null);
   const [draftMode, setDraftMode] = useState<AssistantMode>("GENERAL");
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -146,6 +148,7 @@ export function ChatApp() {
       { id: tempId, role: "user", content, createdAt: new Date().toISOString() },
     ]);
     setSending(true);
+    setStreamingText(null);
 
     let convId = activeIdRef.current;
     try {
@@ -157,16 +160,32 @@ export function ChatApp() {
         setConversations((c) => [conversation, ...c]);
         setActive(convId);
       }
-      const res = await api.post<SendMessageResponse>(`/api/conversations/${convId}/messages`, { content });
-      if (activeIdRef.current === convId) {
-        setMessages((m) => [...m.filter((x) => x.id !== tempId), res.userMessage, res.assistantMessage]);
-      }
-      setConversations((c) => [res.conversation, ...c.filter((x) => x.id !== convId)]);
+      const targetId = convId;
+      let finished = false;
+
+      // Respuesta en streaming: el texto aparece a medida que el modelo lo genera.
+      await postStream<StreamEvent>(`/api/conversations/${targetId}/messages`, { content, stream: true }, (event) => {
+        const visible = activeIdRef.current === targetId;
+        if (event.type === "delta") {
+          if (visible) setStreamingText((t) => (t ?? "") + event.text);
+        } else if (event.type === "done") {
+          finished = true;
+          if (visible) {
+            setMessages((m) => [...m.filter((x) => x.id !== tempId), event.userMessage, event.assistantMessage]);
+          }
+          setConversations((c) => [event.conversation, ...c.filter((x) => x.id !== targetId)]);
+        } else if (event.type === "error") {
+          throw new ApiError(event.message, 0, event.code, event.retryable);
+        }
+      });
+      if (!finished) throw new ApiError("La respuesta se interrumpió. Inténtalo de nuevo.", 0, "INTERRUPTED");
     } catch (e) {
       setMessages((m) => m.map((x) => (x.id === tempId ? { ...x, failed: true } : x)));
-      setError({ message: errorMessage(e), retry: () => void send(content) });
+      const retryable = !(e instanceof ApiError) || e.retryable;
+      setError({ message: errorMessage(e), retry: retryable ? () => void send(content) : undefined });
     } finally {
       setSending(false);
+      setStreamingText(null);
     }
   }
 
@@ -289,7 +308,7 @@ export function ChatApp() {
             (showEmpty ? (
               <EmptyState mode={draftMode} onModeChange={setDraftMode} onPick={(q) => void send(q)} disabled={sending} />
             ) : (
-              <MessageList messages={messages} thinking={sending} />
+              <MessageList messages={messages} thinking={sending} streamingText={streamingText} />
             ))}
         </div>
 

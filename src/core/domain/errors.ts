@@ -37,11 +37,18 @@ export class ValidationError extends DomainError {
   }
 }
 
+/**
+ * Error del proveedor de IA. `kind` permite responder con el código HTTP adecuado:
+ * RATE_LIMIT → 429, TIMEOUT → 504, CONFIG → 500, UNAVAILABLE → 502.
+ */
+export type AIErrorKind = "RATE_LIMIT" | "TIMEOUT" | "CONFIG" | "UNAVAILABLE";
+
 export class AIProviderError extends DomainError {
   constructor(
     message: string,
     public readonly retryable = false,
+    public readonly kind: AIErrorKind = "UNAVAILABLE",
   ) {
-    super(message, "AI_PROVIDER");
+    super(message, kind === "UNAVAILABLE" ? "AI_PROVIDER" : `AI_${kind}`);
   }
 }

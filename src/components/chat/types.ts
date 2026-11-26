@@ -19,11 +19,11 @@ export interface MessageDTO {
   failed?: boolean;
 }
 
-export interface SendMessageResponse {
-  conversation: ConversationDTO;
-  userMessage: MessageDTO;
-  assistantMessage: MessageDTO;
-}
+/** Eventos NDJSON de POST /api/conversations/[id]/messages con stream: true. */
+export type StreamEvent =
+  | { type: "delta"; text: string }
+  | { type: "done"; conversation: ConversationDTO; userMessage: MessageDTO; assistantMessage: MessageDTO }
+  | { type: "error"; code: string; message: string; retryable: boolean };
 
 export const MODES: { value: AssistantMode; label: string; description: string; icon: string }[] = [
   { value: "GENERAL", label: "General", description: "Todo sobre fútbol", icon: "⚽" },

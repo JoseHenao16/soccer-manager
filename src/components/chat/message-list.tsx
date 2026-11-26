@@ -7,20 +7,26 @@ import type { MessageDTO } from "./types";
 export function MessageList({
   messages,
   thinking,
+  streamingText = null,
 }: {
   messages: MessageDTO[];
   thinking: boolean;
+  /** Respuesta parcial que va llegando por streaming. */
+  streamingText?: string | null;
 }) {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
-  }, [messages.length, thinking]);
+    endRef.current?.scrollIntoView({ behavior: streamingText ? "auto" : "smooth", block: "end" });
+  }, [messages.length, thinking, streamingText]);
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-5 px-4 py-6">
       {messages.map((m) => (m.role === "user" ? <UserBubble key={m.id} message={m} /> : <AssistantBubble key={m.id} message={m} />))}
-      {thinking && <ThinkingBubble />}
+      {thinking && streamingText === null && <ThinkingBubble />}
+      {thinking && streamingText !== null && (
+        <AssistantBubble message={{ id: "streaming", role: "assistant", content: streamingText, createdAt: "" }} streaming />
+      )}
       <div ref={endRef} />
     </div>
   );
@@ -41,12 +47,13 @@ function UserBubble({ message }: { message: MessageDTO }) {
   );
 }
 
-function AssistantBubble({ message }: { message: MessageDTO }) {
+function AssistantBubble({ message, streaming = false }: { message: MessageDTO; streaming?: boolean }) {
   return (
     <div className="flex gap-3">
       <Avatar />
       <div className="min-w-0 flex-1 rounded-2xl rounded-tl-md border border-chalk/10 bg-pitch-800 px-4 py-2.5">
         <Markdown>{message.content}</Markdown>
+        {streaming && <span aria-hidden className="ml-0.5 inline-block h-4 w-1.5 animate-pulse rounded-sm bg-accent align-middle" />}
         {message.latencyMs != null && (
           <p className="mt-1 text-[11px] text-chalk-muted/60">{(message.latencyMs / 1000).toFixed(1)} s</p>
         )}

@@ -4,8 +4,11 @@ export const changeRoleSchema = z.object({
   role: z.enum(["ADMIN", "USER"], { error: "Rol inválido" }),
 });
 
-/** Modelos de Groq permitidos (plan gratuito). */
-export const ALLOWED_MODELS = ["openai/gpt-oss-120b", "openai/gpt-oss-20b", "qwen/qwen3.8-27b"] as const;
+/**
+ * Modelos de Groq permitidos (plan gratuito). gpt-oss-20b se excluyó: en las pruebas
+ * respondió fuera del dominio e inventó datos (docs/PRUEBAS-IA.md).
+ */
+export const ALLOWED_MODELS = ["openai/gpt-oss-120b", "qwen/qwen3.8-27b"] as const;
 
 export const assistantConfigSchema = z.object({
   systemPrompt: z

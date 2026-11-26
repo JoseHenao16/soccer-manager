@@ -24,4 +24,5 @@ export const sendMessageSchema = z.object({
     .trim()
     .min(1, "Escribe una pregunta")
     .max(4000, "La pregunta es demasiado larga (máximo 4000 caracteres)"),
+  stream: z.boolean().optional(),
 });

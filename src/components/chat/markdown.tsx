@@ -1,6 +1,9 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+/** Algunos modelos insertan <br> en tablas; como no renderizamos HTML crudo, se cambian por separadores. */
+const clean = (text: string) => text.replace(/<br\s*\/?>/gi, " · ");
+
 /** Renderiza Markdown de forma segura (react-markdown no ejecuta HTML crudo). */
 export function Markdown({ children }: { children: string }) {
   return (
@@ -18,7 +21,7 @@ export function Markdown({ children }: { children: string }) {
           ),
         }}
       >
-        {children}
+        {clean(children)}
       </ReactMarkdown>
     </div>
   );
